@@ -5,13 +5,10 @@ from PIL import Image
 import sys
 import os
 try:
-    file = sys.argv[1]
+    file = os.path.abspath(sys.argv[1])
 except:
     print("Please specify the file to be used...")
     quit(1)
-scriptpath = os.path.dirname(__file__)
-if os.path.dirname(file) == "":
-    file = scriptpath + "/" + file
 def ConvertRGB(num):
     value = hex(num).split('x')[-1].upper()
     if len(value) == 1:
@@ -60,7 +57,7 @@ for index, color in enumerate(colors):
     val = "0x" + redvalue + bluevalue + greenvalue + alphavalue
     final = "const Palette PAL" + ConvertRGB(index) + " = {" + val + "};"
     palfile += "\n" + final
-f = open(os.path.dirname(file) + "/" "palette.c","w+")
+f = open(os.path.dirname(file) + "/" + os.path.basename(file).split('.')[0] + ".c","w+")
 f.write(palfile)
 f.close()
-print("Wrote palette to file palette.c")
+print("Wrote palette to file " + os.path.basename(file).split('.')[0] + ".c")
