@@ -17,7 +17,24 @@ def ConvertRGB(num):
     if len(value) == 1:
         value = "0" + value
     return value
-im2 = Image.open(file)
+valid = [False, False]
+exts = ['.ras', '.ps', '.im', '.tif', '.hdf', '.eps', '.jpg', '.icb', '.dds', '.bmp', '.msp', '.rgb', '.wmf', '.mpeg', '.h5', '.emf', '.blp', '.pcd', '.dcx', '.ftu', '.fit', '.pcx', '.jpeg', '.j2c', '.jpx', '.pxr', '.vda', '.gbr', '.pbm', '.cur', '.sgi', '.webp', '.qoi', '.jpf', '.pnm', '.pfm', '.vst', '.rgba', '.tga', '.jpe', '.pgm', '.xpm', '.png', '.psd', '.dib', '.j2k', '.icns', '.ftc', '.tiff', '.bw', '.ico', '.jpc', '.jfif', '.bufr', '.mpg', '.ppm', '.xbm', '.fli', '.flc', '.iim', '.jp2', '.apng', '.gif', '.fits', '.grib']
+for extension in exts:
+    if os.path.basename(file).endswith(extension):
+        valid[1] = True
+        
+valid[0] = os.path.isfile(file)
+if not valid[0]:
+    print("File does not exist!")
+    quit(1)
+if not valid[1]:
+    print("Invalid filetype!")
+    quit(1)
+try:
+    im2 = Image.open(file)
+except:
+    print("Something went wrong when opening the image. Perhaps it's corrupted?")
+    quit(1)
 im = im2.convert("RGBA")
 width, height = im.size
 if height > 512 or width > 512:
