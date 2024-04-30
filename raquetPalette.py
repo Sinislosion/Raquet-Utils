@@ -23,7 +23,6 @@ def main():
         return
 
     valid_extension = False
-    valid_filetype = False
     for extension in exts:
         if file.lower().endswith(extension):
             valid_extension = True
@@ -46,15 +45,20 @@ def main():
         return
 
     colors = im.getcolors()
+
+    if colors is None:
+        print("No colors found in the image.")
+        return
+
     print("Found", len(colors), "color(s).")
     print("Writing header...")
     palfile = """/*
-     ************************
-     *     PALETTE INFO     *
-     ************************
-    */
+ ************************
+ *     PALETTE INFO     *
+ ************************
+*/
 
-    typedef Uint32 Palette;"""
+typedef Uint32 Palette;"""
     palfile += "\n//Palette generated from " + os.path.basename(file)
 
     for index, color in enumerate(colors):
@@ -72,6 +76,7 @@ def main():
         f.write(palfile)
 
     print("Wrote palette to file", output_filename)
+
 
 if __name__ == "__main__":
     exts = ['.ras', '.ps', '.im', '.tif', '.hdf', '.eps', '.jpg', '.icb', '.dds', '.bmp', '.msp', '.rgb', '.wmf', '.mpeg', '.h5', '.emf', '.blp', '.pcd', '.dcx', '.ftu', '.fit', '.pcx', '.jpeg', '.j2c', '.jpx', '.pxr', '.vda', '.gbr', '.pbm', '.cur', '.sgi', '.webp', '.qoi', '.jpf', '.pnm', '.pfm', '.vst', '.rgba', '.tga', '.jpe', '.pgm', '.xpm', '.png', '.psd', '.dib', '.j2k', '.icns', '.ftc', '.tiff', '.bw', '.ico', '.jpc', '.jfif', '.bufr', '.mpg', '.ppm', '.xbm', '.fli', '.flc', '.iim', '.jp2', '.apng', '.gif', '.fits', '.grib']
